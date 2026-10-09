@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="hu"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>WebKaland – HTML & CSS gyakorló</title>
+<style>
+:root{--bg:#f4f6fb;--card:#fff;--tx:#1b2333;--mu:#5d6882;--ac:#4f46e5;--ok:#16a34a;--no:#dc2626;--bd:#dde2ee;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#10131c;--card:#1b2030;--tx:#e8ecf7;--mu:#9aa5c0;--ac:#818cf8;--bd:#2c3348}}
+:root[data-theme="dark"]{--bg:#10131c;--card:#1b2030;--tx:#e8ecf7;--mu:#9aa5c0;--ac:#818cf8;--bd:#2c3348}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:760px;margin:0 auto;padding:14px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+h1{font-size:1.4rem;margin:0}
+.xp{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:8px 12px;font-weight:600}
+.bar{height:8px;background:var(--bd);border-radius:6px;margin-top:6px;overflow:hidden}.bar i{display:block;height:100%;background:var(--ac)}
+.grid{display:grid;gap:10px;margin:14px 0}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:14px}
+.lv{display:flex;align-items:center;gap:12px;cursor:pointer;text-align:left;width:100%;color:var(--tx);font:inherit}
+.lv b{display:block}.lv small{color:var(--mu)}.ic{font-size:1.8rem}
+button{font:inherit;cursor:pointer;border-radius:10px;border:1px solid var(--bd);background:var(--card);color:var(--tx);padding:9px 14px}
+button.p{background:var(--ac);color:#fff;border-color:var(--ac)}
+.o{display:block;width:100%;text-align:left;margin:7px 0}
+.o.ok{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 18%,var(--card))}.o.no{border-color:var(--no);background:color-mix(in srgb,var(--no) 18%,var(--card))}
+input[type=text]{font:inherit;width:100%;box-sizing:border-box;padding:9px;border-radius:10px;border:1px solid var(--bd);background:var(--bg);color:var(--tx)}
+code,textarea{font-family:ui-monospace,Consolas,monospace}
+code{background:var(--bg);padding:1px 5px;border-radius:5px}
+textarea{width:100%;box-sizing:border-box;height:240px;border-radius:10px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);padding:9px;font-size:.85rem}
+iframe{width:100%;height:170px;border:1px solid var(--bd);border-radius:10px;background:#fff}
+.fb{margin-top:10px;padding:10px;border-radius:10px;background:var(--bg)}
+.chk{list-style:none;padding:0}.chk li{margin:4px 0}
+.mu{color:var(--mu)}.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+</style></head><body><main>
+<div class="top"><h1>🕹️ WebKaland</h1><div class="xp" id="xp"></div></div>
+<div id="app"></div>
+</main>
+<script>
+const L=[
+{n:'1. szint – A HTML5 váz',ic:'🏗️',q:[
+{q:'Melyik sor jelzi, hogy HTML5 dokumentumot írunk?',o:['<!DOCTYPE html>','<html5>','<!HTML 5.0>','<doctype=html5>'],a:0,e:'A HTML5 dokumentumtípus-deklarációja egyszerűen <!DOCTYPE html>.'},
+{q:'Melyik elem tartalma jelenik meg a böngészőfül címében? (írd be a tag nevét, < > nélkül)',f:['title'],e:'A <title> a <head>-ben található.'},
+{q:'Melyik sorral adjuk meg az UTF-8 kódolást?',o:['<meta charset="utf-8">','<charset utf-8>','<head encoding="utf-8">','<meta lang="utf-8">'],a:0,e:'A meta elem charset attribútuma állítja be a kódolást – enélkül elromolhatnak az ékezetek.'},
+{q:'Hová kerül az oldal látható tartalma?',o:['a <head> elembe','a <body> elembe','a <meta> elembe','a <title> elembe'],a:1,e:'A <head> a metaadatokat tartalmazza, a látható tartalom a <body>-ban van.'},
+{q:'Melyik attribútummal adjuk meg az oldal nyelvét az <html> elemen? (egy szó)',f:['lang'],e:'Pl. <html lang="hu">.'}]},
+{n:'2. szint – Tartalmi elemek',ic:'📝',q:[
+{q:'Melyik elem a legfontosabb (legnagyobb) címsor? (tag neve)',f:['h1'],e:'A h1–h6 közül a h1 a legfontosabb; oldalanként általában egy van.'},
+{q:'Melyik üres elem (nincs záró tagje) készít sortörést? (tag neve)',f:['br'],e:'A <br> sortörés; bekezdésekhez inkább <p> kell.'},
+{q:'Melyik elem hoz létre számozott felsorolást?',o:['<ul>','<ol>','<li>','<dl>'],a:1,e:'ol = ordered list, ul = unordered list; az elemek mindkettőben <li>-k.'},
+{q:'Melyik attribútum adja meg a kép helyettesítő szövegét? (egy szó)',f:['alt'],e:'Az alt a képernyőolvasónak és hibás betöltésnél fontos.'},
+{q:'Hogyan nyílik a hivatkozás új lapon?',o:['<a href="x" new>','<a href="x" target="_blank">','<a src="x" blank>','<a href="x" open="tab">'],a:1,e:'A target="_blank" új lapon nyit.'},
+{q:'Melyik elem a táblázat fejléccellája? (tag neve)',f:['th'],e:'tr = sor, td = adatcella, th = fejléccella.'},
+{q:'Melyik elempárral adunk képaláírást egy illusztrációnak?',o:['<picture>/<caption>','<figure>/<figcaption>','<img>/<title>','<div>/<label>'],a:1,e:'A <figure> foglalja egybe a képet és a <figcaption> feliratot.'}]},
+{n:'3. szint – Sor-, blokkszintű és csoportosító elemek',ic:'🧱',q:[
+{q:'Melyik blokkszintű elem?',o:['<span>','<a>','<div>','<strong>'],a:2,e:'A blokkszintű elem új sorban kezdődik és kitölti a szélességet.'},
+{q:'Mire való a <span>?',o:['blokk csoportosítására','sorszintű szövegrész csoportosítására/formázására','táblázat készítésére','kép beszúrására'],a:1,e:'A span sorszintű, a div blokkszintű csoportosító elem.'},
+{q:'Melyik NEM szemantikus HTML5 elem?',o:['<header>','<nav>','<footer>','<div>'],a:3,e:'A div jelentés nélküli csoportosító; a header, nav, main, footer szemantikus.'},
+{q:'Hogyan jelennek meg alapból egymás mellett a sorszintű elemek?',o:['egy sorban, amíg elférnek','mindig külön sorban','csak táblázatban','sehogy'],a:0,e:'A sorszintű elemek a szöveg folyásában maradnak.'}]},
+{n:'4. szint – CSS és kijelölők',ic:'🎨',q:[
+{q:'Melyik attribútummal írunk inline CSS-t? (egy szó)',f:['style'],e:'Pl. <p style="color:red">.'},
+{q:'Melyik sorral csatolunk külső stíluslapot?',o:['<style src="a.css">','<link rel="stylesheet" href="a.css">','<css href="a.css">','<script href="a.css">'],a:1,e:'A <link> a <head>-be kerül.'},
+{q:'Melyik jellel kezdődik az id-kijelölő a CSS-ben? (egy karakter)',f:['#'],e:'#fejlec → id="fejlec"; .kiemelt → class="kiemelt".'},
+{q:'Mit választ ki a <code>p.kiemelt</code>?',o:['minden p elemet és minden kiemelt osztályút','azokat a p elemeket, amelyeknek class="kiemelt"','a kiemelt azonosítójú elemet','a p elem utáni elemet'],a:1,e:'Elem + .osztály szorosan egybeírva: mindkét feltételnek teljesülnie kell.'},
+{q:'Melyik kijelölő találja meg az új lapon nyíló hivatkozásokat?',o:['a#_blank','a.target','a[target="_blank"]','a:blank'],a:2,e:'Az attribútumkijelölő szögletes zárójelben van.'},
+{q:'Melyik szabály a legerősebb, ha ugyanazt a tulajdonságot állítják?',o:['elemkijelölő','osztálykijelölő','id-kijelölő','mind egyenlő'],a:2,e:'Erősség: elem < osztály < id < inline style.'}]},
+{n:'5. szint – A boxmodell',ic:'📦',q:[
+{q:'Mi a sorrend belülről kifelé?',o:['tartalom, padding, border, margin','tartalom, margin, border, padding','border, padding, tartalom, margin','padding, tartalom, margin, border'],a:0,e:'Tartalom → belső tér (padding) → keret (border) → külső tér (margin).'},
+{q:'Melyik tulajdonság a belső tér a tartalom és a keret között? (egy szó)',f:['padding'],e:'A margin a keret KÍVÜLI távolság.'},
+{q:'width:300px; padding:20px; border:2px solid; (content-box). Mekkora a doboz teljes szélessége px-ben? (csak szám)',f:['344'],e:'300 + 2·20 + 2·2 = 344.'},
+{q:'Mit jelent a margin:10px 20px; ?',o:['fent-lent 10px, jobbra-balra 20px','fent-lent 20px, jobbra-balra 10px','mind a négy oldalon 30px','csak fent és jobbra'],a:0,e:'Két érték: függőleges, vízszintes.'}]}];
+
+const M=[
+{n:'Műhely 1 – Weblap felépítése',t:'Alakítsd át a nyers szöveget weblappá: lang és charset, 1 db h1, legalább 2 db h2, bekezdés (p), 3 elemű felsorolás (ul/li), hivatkozás (a href), kép alt szöveggel.',
+s:`<!DOCTYPE html>
+<html>
+<head>
+<title>Síparadicsomok</title>
+</head>
+<body>
+Síparadicsomok
+Alpesi síterepek
+Ausztria és Svájc a legkedveltebb úticél.
+Kedvenc helyek
+Zermatt
+St. Anton
+Kitzbühel
+Forrás: síoldal
+</body>
+</html>`,
+c:[['<html lang="..."> megadva',d=>d.documentElement.getAttribute('lang')],['meta charset',d=>d.querySelector('meta[charset]')],['pontosan 1 db h1',d=>d.querySelectorAll('h1').length==1],['legalább 2 db h2',d=>d.querySelectorAll('h2').length>=2],['legalább 1 p',d=>d.querySelector('p')],['ul-ben legalább 3 li',d=>d.querySelectorAll('ul>li').length>=3],['hivatkozás href-fel',d=>d.querySelector('a[href]')],['img alt attribútummal',d=>d.querySelector('img[alt]')]]},
+{n:'Műhely 2 – Kijelölők',t:'A <style> részbe írj szabályokat: #fejlec háttérszíne, .kiemelt betűszíne, a[target="_blank"] szövege legyen aláhúzás nélküli, td szegélye. A záró bekezdést inline style-lal is formázd.',
+s:`<!DOCTYPE html>
+<html lang="hu"><head><meta charset="utf-8">
+<style>
+/* ide írd a szabályokat */
+
+</style></head>
+<body>
+<header id="fejlec">Fejléc</header>
+<p class="kiemelt">Fontos szöveg</p>
+<a href="https://example.com" target="_blank">Link</a>
+<table><tr><td>Egy</td><td>Kettő</td></tr></table>
+<p>Záró bekezdés</p>
+</body></html>`,
+c:[['#fejlec { background... }',(d,c)=>/#fejlec\s*\{[^}]*background/i.test(c)],['.kiemelt { color... }',(d,c)=>/\.kiemelt\s*\{[^}]*[^-]color\s*:/i.test(c)],['a[target="_blank"] { text-decoration:none }',(d,c)=>/a\[target=["']?_blank["']?\]\s*\{[^}]*text-decoration\s*:\s*none/i.test(c)],['td { border... }',(d,c)=>/td\s*\{[^}]*border/i.test(c)],['inline style valamelyik p-n',d=>d.querySelector('p[style]')]]},
+{n:'Műhely 3 – Boxmodell',t:'Formázd a .doboz osztályt: width:300px; padding:20px; border:2px solid (bármilyen színnel); margin:10px auto.',
+s:`<!DOCTYPE html>
+<html lang="hu"><head><meta charset="utf-8">
+<style>
+.doboz{
+
+}
+</style></head>
+<body><div class="doboz">Tartalom</div></body></html>`,
+c:[['width:300px',(d,c)=>/\.doboz\s*\{[^}]*width\s*:\s*300px/i.test(c)],['padding:20px',(d,c)=>/\.doboz\s*\{[^}]*padding\s*:\s*20px/i.test(c)],['border:2px solid',(d,c)=>/\.doboz\s*\{[^}]*border\s*:\s*2px\s+solid/i.test(c)],['margin:10px auto',(d,c)=>/\.doboz\s*\{[^}]*margin\s*:\s*10px\s+auto/i.test(c)]]}];
+
+let S;try{S=JSON.parse(localStorage.getItem('wk')||'')}catch(e){}S=S||{xp:0,d:{}};
+const save=()=>{try{localStorage.setItem('wk',JSON.stringify(S))}catch(e){}};
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const $=id=>document.getElementById(id),app=$('app');
+const T=['Újonc','Tagfaragó','Stílusmester','Boxmodell-bajnok','Web-guru'];
+function head(){const lv=Math.min(Math.floor(S.xp/60),4);$('xp').innerHTML=`⭐ ${S.xp} XP · ${T[lv]}<div class="bar"><i style="width:${Math.min(100,S.xp%60/60*100)}%"></i></div>`}
+function home(){head();app.innerHTML='<p class="mu">Teljesítsd a szinteket, gyűjts XP-t, majd próbáld ki magad az érettségi-műhelyben!</p><div class="grid">'+
+L.map((l,i)=>`<button class="card lv" onclick="quiz(${i})"><span class="ic">${l.ic}</span><span><b>${l.n}</b><small>${l.q.length} kérdés · ${S.d['l'+i]?'✅ teljesítve ('+S.d['l'+i]+'/'+l.q.length+')':'még nincs kész'}</small></span></button>`).join('')+
+'</div><h2>🛠️ Érettségi-műhely</h2><div class="grid">'+
+M.map((m,i)=>`<button class="card lv" onclick="lab(${i})"><span class="ic">💻</span><span><b>${m.n}</b><small>${S.d['m'+i]?'✅ kész':'gyakorlati feladat, automatikus ellenőrzéssel'}</small></span></button>`).join('')+
+'</div><p class="mu"><small>Az érettségi emelt szinten a weblap-feladat kész HTML/CSS állományokat kér módosítani: címsorok, bekezdések, listák, képek, táblázatok, hivatkozások, külső stíluslap és kijelölők használata.</small></p>'}
+let st;
+function quiz(i){st={i,k:0,ok:0,tries:0};qs()}
+function qs(){const l=L[st.i],q=l.q[st.k];st.tries=0;
+app.innerHTML=`<div class="card"><small class="mu">${l.n} · ${st.k+1}/${l.q.length}</small><p><b>${esc(q.q)}</b></p>`+
+(q.o?q.o.map((o,j)=>`<button class="o" onclick="ans(${j})">${esc(o)}</button>`).join(''):'<input type="text" id="in" autocomplete="off" autocapitalize="off" onkeydown="if(event.key==\'Enter\')ans()"><div class="row"><button class="p" onclick="ans()">Ellenőrzés</button></div>')+
+'<div id="fb"></div></div><div class="row"><button onclick="home()">← Vissza</button></div>'}
+function ans(j){const q=L[st.i].q[st.k];let good;
+if(q.o){good=j==q.a;const b=app.querySelectorAll('.o');b[j].classList.add(good?'ok':'no');if(!good)b[q.a].classList.add('ok');b.forEach(x=>x.disabled=true)}
+else{const v=$('in').value.toLowerCase().replace(/[\s<>\/]/g,'').replace(/px$/,'');good=q.f.includes(v);if(!good&&st.tries<1){st.tries++;$('fb').innerHTML='<div class="fb">❌ Nem egészen – próbáld újra még egyszer!</div>';return}$('in').disabled=true}
+if(good){st.ok++;S.xp+=st.tries?5:10}
+$('fb').innerHTML=`<div class="fb">${good?'✅ Helyes! ':'❌ A helyes válasz: <b>'+esc(q.o?q.o[q.a]:q.f[0])+'</b>. '}${esc(q.e)}<div class="row"><button class="p" onclick="nxt()">Tovább →</button></div></div>`;head();save()}
+function nxt(){const l=L[st.i];if(++st.k<l.q.length)return qs();
+const best=Math.max(S.d['l'+st.i]||0,st.ok);S.d['l'+st.i]=best;if(st.ok==l.q.length)S.xp+=20;save();head();
+app.innerHTML=`<div class="card"><h2>${st.ok==l.q.length?'🏆 Tökéletes!':'🎯 Szint vége'}</h2><p>${st.ok}/${l.q.length} helyes válasz.${st.ok==l.q.length?' +20 bónusz XP!':' Ismételd meg a hibátlan teljesítésért járó bónuszért.'}</p><div class="row"><button class="p" onclick="quiz(${st.i})">Újra</button><button onclick="home()">Főoldal</button></div></div>`}
+function lab(i){const m=M[i];app.innerHTML=`<div class="card"><b>${m.n}</b><p>${esc(m.t)}</p><textarea id="ed" spellcheck="false" oninput="pv()">${esc(m.s)}</textarea><div class="row"><button class="p" onclick="run(${i})">Ellenőrzés</button><button onclick="lab(${i})">Alaphelyzet</button><button onclick="home()">← Vissza</button></div><div id="res"></div><p class="mu"><small>Előnézet:</small></p><iframe id="pv" sandbox="allow-same-origin"></iframe></div>`;pv()}
+function pv(){$('pv').srcdoc=$('ed').value}
+function run(i){const m=M[i],src=$('ed').value,d=new DOMParser().parseFromString(src,'text/html'),c=[...d.querySelectorAll('style')].map(s=>s.textContent).join('\n');
+const r=m.c.map(([t,f])=>{let ok=false;try{ok=!!f(d,c)}catch(e){}return[t,ok]}),n=r.filter(x=>x[1]).length;
+if(n==r.length&&!S.d['m'+i]){S.d['m'+i]=1;S.xp+=30;save();head()}
+$('res').innerHTML=`<ul class="chk">${r.map(x=>`<li>${x[1]?'✅':'⬜'} ${esc(x[0])}</li>`).join('')}</ul><div class="fb">${n==r.length?'🎉 Mind teljesítve! (+30 XP az első alkalommal)':n+'/'+r.length+' teljesítve – folytasd!'}</div>`}
+home();
+</script>
+<style>.sm{background:var(--bg);border-radius:10px;padding:4px 14px;margin:8px 0}.sm li{margin:5px 0}.pl{white-space:pre-line}.qd{opacity:.55}.mon{font-size:2.4rem;text-align:center}</style>
+<script>
+S.b=S.b||{};S.q=S.q||{};S.c=S.c||0;S.g=S.g||0;S.f=S.f||0;
+const SM=[
+`<ul><li><code>&lt;!DOCTYPE html&gt;</code>: a HTML5 jelzése, a fájl első sora.</li><li>Gyökérelem: <code>&lt;html lang="hu"&gt;</code>. Benne a <code>&lt;head&gt;</code> (metaadatok: <code>title</code>, <code>meta charset="utf-8"</code>, <code>link</code>) és a <code>&lt;body&gt;</code> (látható tartalom).</li><li>Az elem lehet páros (<code>&lt;p&gt;…&lt;/p&gt;</code>) vagy üres (<code>&lt;br&gt;</code>, <code>&lt;img&gt;</code>). Az attribútum a nyitó tagben áll: <code>név="érték"</code>.</li><li>Megjegyzés: <code>&lt;!-- szöveg --&gt;</code></li></ul>`,
+`<ul><li>Címsorok: <code>h1</code>–<code>h6</code>; bekezdés: <code>p</code>; sortörés: <code>br</code>; vonal: <code>hr</code>; kiemelés: <code>strong</code>, <code>em</code>.</li><li>Felsorolás: <code>ul</code> (jeles) vagy <code>ol</code> (számozott), elemei <code>li</code>.</li><li>Kép: <code>&lt;img src="fájl" alt="leírás"&gt;</code>; illusztráció aláírással: <code>figure</code> + <code>figcaption</code>.</li><li>Hivatkozás: <code>&lt;a href="cél" target="_blank"&gt;</code>.</li><li>Táblázat: <code>table</code> › <code>tr</code> (sor) › <code>th</code> (fejléc) / <code>td</code> (adat).</li></ul>`,
+`<ul><li>Blokkszintű elem (<code>p</code>, <code>h1</code>, <code>div</code>, <code>ul</code>, <code>table</code>): új sorban kezdődik, kitölti a szélességet.</li><li>Sorszintű elem (<code>a</code>, <code>span</code>, <code>strong</code>, <code>em</code>, <code>img</code>): a szövegben marad.</li><li>Csoportosítók: <code>div</code> (blokk), <code>span</code> (sor).</li><li>Szemantikus szerkezet: <code>header</code>, <code>nav</code>, <code>main</code>, <code>section</code>, <code>footer</code>.</li></ul>`,
+`<ul><li>Szabály: <code>kijelölő { tulajdonság: érték; }</code></li><li>Kijelölők: elem <code>p</code>, osztály <code>.kiemelt</code>, id <code>#fejlec</code>, kombinált <code>p.kiemelt</code>, attribútum <code>a[target="_blank"]</code>. Az id oldalanként egyedi.</li><li>Három mód: inline (<code>style="…"</code>), belső (<code>&lt;style&gt;</code>), külső (<code>&lt;link rel="stylesheet" href="stilus.css"&gt;</code> a head-ben).</li><li>Erősség: elem &lt; osztály &lt; id &lt; inline.</li><li>Gyakori: <code>color</code>, <code>background-color</code>, <code>font-size</code>, <code>text-align</code>, <code>text-decoration</code>.</li></ul>`,
+`<ul><li>Belülről kifelé: tartalom (<code>width</code>, <code>height</code>) › <code>padding</code> › <code>border</code> › <code>margin</code>.</li><li>Alapesetben (content-box) a teljes méret = tartalom + 2·padding + 2·border. Border-box esetén a width ezeket is tartalmazza.</li><li>Rövidítés: 1 érték = mind a 4 oldal; 2 érték = fent-lent, jobbra-balra; <code>margin: 10px auto</code> vízszintesen középre teszi a blokkot.</li></ul>`];
+const X=[
+[{q:'Melyik elemben van a <title> és a <meta>? (tag neve)',f:['head'],e:'A metaadatok a <head>-ben vannak.'},{q:'Mi a HTML-fájl szokásos kiterjesztése? (pont nélkül)',f:['html'],e:'Pl. index.html (a .htm is használatos).'},{q:'Melyik a helyes szerkezet?',o:['<html> › előbb <head>, utána <body>','<html> › előbb <body>, utána <head>','<head> › <html> › <body>','<body> › <head> › <html>'],a:0,e:'A head a body előtt áll, mindkettő az html-ben.'},{q:'Melyik a HTML-megjegyzés?',o:['<!-- megjegyzés -->','// megjegyzés','/* megjegyzés */','# megjegyzés'],a:0,e:'A /* */ CSS-megjegyzés.'}],
+[{q:'Melyik elem készít bekezdést? (tag neve)',f:['p'],e:'A p a bekezdés.'},{q:'Melyik attribútum adja meg a kép fájlját? (egy szó)',f:['src'],e:'Az img src attribútuma a forrás.'},{q:'Melyik attribútum adja a hivatkozás célját? (egy szó)',f:['href'],e:'Pl. <a href="https://…">.'},{q:'Melyik elem a táblázat egy sora? (tag neve)',f:['tr'],e:'tr = table row.'},{q:'Melyik elem hoz létre vízszintes vonalat? (tag neve)',f:['hr'],e:'hr = horizontal rule.'},{q:'Melyik a helyes képbeszúrás?',o:['<img src="kep.jpg" alt="Leírás">','<img href="kep.jpg" alt="Leírás">','<image src="kep.jpg">','<img>kep.jpg</img>'],a:0,e:'Az img üres elem, nincs záró tagje.'}],
+[{q:'Melyik blokkszintű?',o:['<em>','<p>','<img>','<a>'],a:1,e:'A p blokkszintű.'},{q:'Mit csinál alapból egy <div>?',o:['új sorban kezdődik és kitölti a szélességet','a szövegben marad','kép lesz belőle','nem látszik'],a:0,e:'A div blokkszintű csoportosító.'},{q:'Melyik elemmel jelöljük az oldal fő tartalmát? (tag neve)',f:['main'],e:'A main szemantikus elem.'},{q:'Melyik elem a navigációs hivatkozások csoportja? (tag neve)',f:['nav'],e:'nav = navigáció.'}],
+[{q:'Melyik tulajdonság állítja a szöveg színét? (egy szó)',f:['color'],e:'A color a betűszín.'},{q:'Melyik jel az osztálykijelölő eleje? (egy karakter)',f:['.'],e:'.kiemelt ↔ class="kiemelt".'},{q:'Melyik a helyes CSS-szabály?',o:['p { color: red; }','p ( color = red )','p: color { red }','<p color="red">'],a:0,e:'kijelölő { tulajdonság: érték; }'},{q:'Hány elemnek lehet ugyanaz az id-ja egy oldalon?',o:['csak egynek','tetszőleges számúnak','legfeljebb kettőnek','semennyinek'],a:0,e:'Az id egyedi azonosító; a class több elemen is lehet.'},{q:'Melyik tulajdonság a háttérszín? (pl. ...-color)',f:['background-color','background'],e:'background-color: #fff;'},{q:'Melyik igazítja középre a szöveget?',o:['text-align: center;','align: center;','font-center: true;','margin: text;'],a:0,e:'A text-align a szöveg vízszintes igazítása.'}],
+[{q:'Mit tesz a margin: auto; (adott szélességű blokkon)?',o:['vízszintesen középre teszi','eltünteti a keretet','megnöveli a paddinget','semmit'],a:0,e:'Az auto a szabad helyet egyenlően osztja.'},{q:'Melyik tulajdonság a szegély? (egy szó)',f:['border'],e:'border: 2px solid black;'},{q:'height:100px; padding:10px; border:5px solid; (content-box). Teljes magasság px-ben? (szám)',f:['130'],e:'100 + 2·10 + 2·5 = 130.'},{q:'Melyik tulajdonság a külső tér? (egy szó)',f:['margin'],e:'A margin a keret kívüli távolság.'},{q:'Mit jelent a box-sizing: border-box;?',o:['a width tartalmazza a paddinget és a keretet is','nincs keret','a margin a belső tér','a doboz láthatatlan'],a:0,e:'Így a megadott width a teljes (keretig tartó) szélesség.'}]];
+L.forEach((l,i)=>{l.q.push(...X[i]);l.s=SM[i]});
+const MON=['🐛 Hibabogár','👹 Tag-troll','🗿 Blokk-gólem','🐍 Stíluskígyó','🐉 Boxmodell-sárkány'],T2=['Tanonc','Tagfaragó','Stílusvarázsló','Boxmodell-lovag','Web-főmágus'];
+const Q=[['Első vér','Adj 1 helyes választ',()=>S.c>=1,10],['Tudásszomj','Adj 20 helyes választ összesen',()=>S.c>=20,30],['Szörnyvadász','Győzz le 3 különböző főellenséget',()=>Object.keys(S.b).length>=3,40],['Sérthetetlen','Nyerj úgy, hogy mind a 3 ❤️ megmarad',()=>S.f,30],['Kódkovács','Teljesíts egy műhelyfeladatot',()=>Object.keys(S.d).some(k=>k[0]=='m'),30],['Legenda','Győzd le mind az 5 főellenséget és old meg az összes műhelyt',()=>Object.keys(S.b).length>=5&&M.every((m,i)=>S.d['m'+i]),100]];
+let nq=[];
+function chq(){Q.forEach(([n,,f,g])=>{if(!S.q[n]&&f()){S.q[n]=1;S.g+=g;S.xp+=g;nq.push(n)}})}
+const toast=()=>nq.length?`<div class="fb">🏅 Küldetés teljesítve: <b>${nq.splice(0).join(', ')}</b>!</div>`:'';
+function head(){chq();save();const lv=Math.min(Math.floor(S.xp/80),4);$('xp').innerHTML=`🧙 ${T2[lv]} · ⭐${S.xp} · 🪙${S.g}<div class="bar"><i style="width:${S.xp%80/80*100}%"></i></div>`}
+function home(){head();app.innerHTML='<p class="mu">Hősöd a tudás erejével harcol. Tanulj a szinten, győzd le a főellenséget (3 találat kell, 3 ❤️-ed van), és teljesítsd a küldetéseket!</p><div class="grid">'+
+L.map((l,i)=>`<button class="card lv" onclick="quiz(${i})"><span class="ic">${l.ic}</span><span><b>${l.n}</b><small>Főellenség: ${MON[i]} · ${S.b['l'+i]?'✅ legyőzve':'vár rád'} · ${l.q.length} kérdés a bankban</small></span></button>`).join('')+
+'</div><h2>🛠️ Érettségi-műhely</h2><div class="grid">'+M.map((m,i)=>`<button class="card lv" onclick="lab(${i})"><span class="ic">💻</span><span><b>${m.n}</b><small>${S.d['m'+i]?'✅ kész':'gyakorlati feladat, automatikus ellenőrzéssel'}</small></span></button>`).join('')+
+'</div><h2>📜 Küldetésnapló</h2><div class="card">'+Q.map(([n,d,,g])=>`<div class="${S.q[n]?'':'qd'}">${S.q[n]?'✅':'⬜'} <b>${n}</b>: ${d} <span class="mu">(+${g}🪙/⭐)</span></div>`).join('')+'</div>'+toast()}
+function quiz(i){app.innerHTML=`<div class="card"><h2>${L[i].ic} ${L[i].n}</h2><b>Összefoglaló</b><div class="sm">${L[i].s}</div><div class="row"><button class="p" onclick="fight(${i})">⚔️ Harcra fel!</button><button onclick="home()">← Vissza</button></div></div>`}
+function fight(i){st={i,b:[...L[i].q].sort(()=>Math.random()-.5),k:0,ok:0,hp:3,tries:0};qs()}
+function qs(){const q=st.b[st.k];st.tries=0;
+app.innerHTML=`<div class="card"><div class="row mu" style="justify-content:space-between"><span>🧙 ${'❤️'.repeat(st.hp)}${'🖤'.repeat(3-st.hp)}</span><span>${MON[st.i]} ${'🟥'.repeat(3-st.ok)}${'⬛'.repeat(st.ok)}</span></div><p><b>${esc(q.q)}</b></p>`+
+(q.o?q.o.map((o,j)=>`<button class="o" onclick="ans(${j})">${esc(o)}</button>`).join(''):'<input type="text" id="in" autocomplete="off" autocapitalize="off" onkeydown="if(event.key==\'Enter\')ans()"><div class="row"><button class="p" onclick="ans()">Támadás</button></div>')+'<div id="fb"></div></div><div class="row"><button onclick="home()">🏃 Menekülés</button></div>'}
+function ans(j){const q=st.b[st.k];let good;
+if(q.o){good=j==q.a;const b=app.querySelectorAll('.o');b[j].classList.add(good?'ok':'no');if(!good)b[q.a].classList.add('ok');b.forEach(x=>x.disabled=true)}
+else{const v=$('in').value.toLowerCase().replace(/[\s<>\/]/g,'').replace(/px$/,'');good=q.f.includes(v);if(!good&&st.tries<1){st.tries++;$('fb').innerHTML='<div class="fb">❌ Nem egészen, próbáld újra egyszer!</div>';return}$('in').disabled=true}
+if(good){st.ok++;S.c++;S.g+=st.tries?1:2;S.xp+=st.tries?5:10}else st.hp--;
+$('fb').innerHTML=`<div class="fb">${good?'⚔️ Találat! ':'💥 Kaptál egy sebet! A helyes válasz: <b>'+esc(q.o?q.o[q.a]:q.f[0])+'</b>. '}${esc(q.e)}<div class="row"><button class="p" onclick="nxt()">Tovább →</button></div></div>`;head()}
+function nxt(){if(st.ok>=3||st.hp<=0)return fin();st.k++;qs()}
+function fin(){const w=st.ok>=3,i=st.i;if(w){const f=!S.b['l'+i];S.b['l'+i]=1;S.xp+=f?30:10;S.g+=f?20:5;if(st.hp==3)S.f=1}head();
+app.innerHTML=`<div class="card"><div class="mon">${w?'🏆':'💀'}</div><h2>${w?MON[i]+' legyőzve!':'Vereség'}</h2><p>${w?'Zsákmány: +'+(S.b['l'+i]?'XP és 🪙':'')+' jutalom.':'A '+MON[i]+' ezúttal erősebb volt. Olvasd át az összefoglalót, és próbáld újra!'}</p>${toast()}<div class="row"><button class="p" onclick="fight(${i})">Új harc (új kérdések)</button><button onclick="quiz(${i})">Összefoglaló</button><button onclick="home()">Főoldal</button></div></div>`}
+function lab(i){const m=M[i];app.innerHTML=`<div class="card"><b>${m.n}</b><p class="pl">${esc(m.t)}</p><textarea id="ed" spellcheck="false" oninput="pv()">${esc(m.s)}</textarea><div class="row"><button class="p" onclick="run(${i})">Ellenőrzés</button><button onclick="lab(${i})">Alaphelyzet</button><button onclick="home()">← Vissza</button></div><div id="res"></div><p class="mu"><small>Előnézet:</small></p><iframe id="pv" sandbox="allow-same-origin"></iframe></div>`;pv()}
+const _run=run;run=function(i){_run(i);const r=$('res');if(r)r.innerHTML+=toast()};
+M[0].t=`Az oldalon nyers szöveg van. Alakítsd weblappá, a szöveget ne módosítsd!
+1. A <html> elemhez add meg a lang="hu" attribútumot.
+2. A <head>-be írj meta elemet UTF-8 karakterkódolással.
+3. A "Síparadicsomok" sor legyen egyes szintű címsor.
+4. Az "Alpesi síterepek" és a "Kedvenc helyek" sor legyen kettes szintű címsor.
+5. Az "Ausztria és Svájc..." mondat legyen bekezdés.
+6. Zermatt, St. Anton és Kitzbühel legyen egy rendezetlen felsorolás 3 elemmel.
+7. A "Forrás: síoldal" sor legyen külön bekezdés, a "síoldal" szó pedig hivatkozás a https://example.com címre.
+8. A felsorolás után szúrj be képet: src="sipalya.jpg", alt="Síterep az Alpokban", width="300".`;
+M[0].c.push(['a forrás bekezdésében hivatkozás van',d=>[...d.querySelectorAll('p')].some(p=>p.querySelector('a[href]'))],['img src="sipalya.jpg"',d=>d.querySelector('img[src="sipalya.jpg"]')]);
+M[1].t=`A <style> elembe (a megjegyzés helyére) írd meg a CSS-szabályokat. Mindegyikhez a megadott kijelölőt használd!
+1. Kijelölő: az id="fejlec" elem. Tulajdonság: background-color, értéke #123a6b.
+2. Kijelölő: a "kiemelt" osztály. Tulajdonság: color, értéke red.
+3. Kijelölő: azok az a elemek, amelyeknek target attribútuma "_blank". Tulajdonság: text-decoration, értéke none.
+4. Kijelölő: a td elemek. Tulajdonság: border, értéke 1px solid black.
+5. A "Záró bekezdés" p elemhez írj inline style attribútumot, amelyben a font-size 20px.`;
+M[1].c.push(['inline font-size:20px a p-n',d=>[...d.querySelectorAll('p[style]')].some(p=>/font-size\s*:\s*20px/.test(p.getAttribute('style')))]);
+M[2].t=`A .doboz osztály szabályába (a kapcsos zárójelek közé) írd be:
+1. width: 300px
+2. padding: 20px (mind a négy oldalon)
+3. border: 2px vastag, folytonos (solid), tetszőleges színű
+4. margin: fent és lent 10px, vízszintesen auto (így a doboz középre kerül)
+Gondold végig: content-box esetén mekkora lesz a doboz teljes szélessége? (Megoldás: 344px.)`;
+M.push({n:'Műhely 4 – Külső stíluslap, táblázat, illusztráció',t:`Egészítsd ki az oldalt:
+1. A <head>-ben csatold a külső stilus.css stíluslapot (link elem, rel="stylesheet", href="stilus.css").
+2. A h1 alá készíts 3 soros, 2 oszlopos táblázatot. Első sor fejléc: "Méret" és "Érték"; a további sorok: "Hossz" – "20 m", "Szélesség" – "10 m".
+3. A táblázat után szúrj be illusztrációt: figure elemben img (src="padel.jpg", alt="Padelpálya") és figcaption "A padelpálya".
+4. A bekezdésben a "párosban" szót tedd span elembe, class="kiemelt" osztállyal.`,
+s:`<!DOCTYPE html>
+<html lang="hu"><head><meta charset="utf-8">
+<title>Padel</title>
+</head>
+<body>
+<h1>Padel</h1>
+<p>A padel párosban játszott ütős sport.</p>
+</body></html>`,
+c:[['link rel="stylesheet" href="stilus.css"',d=>d.querySelector('head link[rel="stylesheet"][href="stilus.css"]')],['táblázat legalább 3 sorral',d=>d.querySelectorAll('table tr').length>=3],['legalább 2 th fejléc',d=>d.querySelectorAll('th').length>=2],['figure › img[alt] + figcaption',d=>d.querySelector('figure img[alt]')&&d.querySelector('figure figcaption')],['span.kiemelt a bekezdésben',d=>d.querySelector('p span.kiemelt')]]});
+home();
+</script>
+<script>
+S.inv=S.inv||{p:0,t:0};S.sh=S.sh||0;S.av=S.av||'🧙';S.own=S.own||[];S.bug=S.bug||0;S.sp=S.sp||0;
+Q.push(['Poloskavadász','Javíts ki 10 hibát a Hibavadászatban',()=>S.bug>=10,40],['Bevásárlás','Vásárolj valamit a boltban',()=>S.sp>=1,15]);
+const SH=[['p','🧪 Gyógyital','Harc közben +1 ❤️ (max. 3)',15,'c'],['t','📜 Tipp-tekercs','Harc közben kiejt 2 rossz választ, vagy megmutatja a beírós válasz első betűjét',10,'c'],['sh','🛡️ Varázspajzs','Állandó: minden harcban kivédi az első sebet',40,'u'],['🥷','🥷 Ninja avatar','Új hős-kinézet',30,'a'],['🦸','🦸 Hős avatar','Új hős-kinézet',30,'a'],['🧑‍💻','🧑‍💻 Kódoló avatar','Új hős-kinézet',50,'a']];
+const BG=[
+{c:['<ul>','  <li>Alma</li>','  <li>Körte</ol>','</ul>'],l:2,o:['<li>Körte</li>','<li>Körte<li>','</li>Körte<li>','<ul>Körte</ul>'],a:0,e:'A li elemet </li>-vel kell zárni, nem </ol>-lel.'},
+{c:['<p>Új lapon nyílik:</p>','<a href="https://example.com" target="blank">Link</a>'],l:1,o:['target="_blank"','target="new tab"','target=_blank_','targets="_blank"'],a:0,e:'Az érték aláhúzással kezdődik: _blank.'},
+{c:['p {','  color: red','  font-size: 20px;','}'],l:1,o:['color: red;','color = red;','color: red,','color red;'],a:0,e:'A CSS-deklarációkat pontosvessző zárja.'},
+{c:['<style>','  .kiemelt { color: red; }','</style>','<p id="kiemelt">Fontos</p>'],l:3,o:['<p class="kiemelt">Fontos</p>','<p kiemelt>Fontos</p>','<p name="kiemelt">Fontos</p>','<kiemelt>Fontos</kiemelt>'],a:0,e:'A .kiemelt osztálykijelölő class attribútumot keres, nem id-t.'},
+{c:['<head>','  <title>Oldal</title>','  <link href="stilus.css">','</head>'],l:2,o:['<link rel="stylesheet" href="stilus.css">','<link src="stilus.css">','<style href="stilus.css">','<css href="stilus.css">'],a:0,e:'A külső stíluslaphoz a rel="stylesheet" is kell.'},
+{c:['<table>','  <tr><th>Név</th><th>Kor</th></tr>','  <td>Anna</td><td>16</td>','</table>'],l:2,o:['<tr><td>Anna</td><td>16</td></tr>','<th>Anna</th><th>16</th>','<tr>Anna 16</tr>','<row><td>Anna</td><td>16</td></row>'],a:0,e:'A cellákat sorba (tr) kell foglalni.'},
+{c:['<h1>Tájkép</h1>','<img src="tavasz.jpg">'],l:1,o:['<img src="tavasz.jpg" alt="Tavaszi táj">','<img src="tavasz.jpg"></img>','<img href="tavasz.jpg">','<img alt="tavasz.jpg">'],a:0,e:'Az img-hez alt (helyettesítő szöveg) szükséges.'},
+{c:['.doboz {','  width: 300px;','  padding: 20 px;','  border: 2px solid;','}'],l:2,o:['padding: 20px;','padding: 20 px','padding = 20px;','padding: "20px";'],a:0,e:'Az érték és a mértékegység között nincs szóköz.'},
+{c:['<html lang="hu">','<body>','  <h1>Cím</h1>','</body>','<head><title>Lap</title></head>','</html>'],l:4,o:['A head sort a body elé kell tenni','A head sort törölni kell','A head legyen a body-n belül','A title kerüljön a </html> után'],a:0,e:'A head a body előtt áll.'},
+{c:['p.kiemelt { color: red; }','<p>Normál</p>','<span class="kiemelt">Szöveg</span>'],l:0,o:['.kiemelt { color: red; }','span { color: red; }','#kiemelt { color: red; }','p#kiemelt { color: red; }'],a:0,e:'A p.kiemelt csak p elemet talál; az osztálykijelölő elemtől függetlenül működik.'}];
+function hunt(){st={bugs:[...BG].sort(()=>Math.random()-.5).slice(0,5),k:0,ok:0};hq()}
+function hq(){const b=st.bugs[st.k];st.ph=0;st.t1=0;app.innerHTML=`<div class="card"><small class="mu">🐞 Hibavadászat ${st.k+1}/5</small><p><b>Melyik sorban van a hiba?</b></p>`+b.c.map((l,j)=>`<button class="o" style="font-family:ui-monospace,monospace;white-space:pre;overflow-x:auto" onclick="hl(${j})">${esc(l)}</button>`).join('')+'<div id="fb"></div></div><div class="row"><button onclick="home()">← Vissza</button></div>'}
+function hl(j){const b=st.bugs[st.k],B=app.querySelectorAll('.o');if(st.ph)return;
+if(j!=b.l){st.t1=1;B[j].classList.add('no');B[j].disabled=true;$('fb').innerHTML='<div class="fb">❌ Ebben a sorban nincs hiba, keress tovább!</div>';return}
+st.ph=1;B.forEach(x=>x.disabled=true);B[j].classList.add('ok');
+$('fb').innerHTML='<p><b>Megtaláltad! Mi a helyes javítás?</b></p>'+b.o.map((o,m)=>`<button class="o" onclick="hf(${m})">${esc(o)}</button>`).join('')}
+function hf(m){const b=st.bugs[st.k],F=document.querySelectorAll('#fb .o'),g=m==b.a;F.forEach(x=>x.disabled=true);F[m].classList.add(g?'ok':'no');F[b.a].classList.add('ok');
+if(g){st.ok++;S.bug++;const f=!st.t1;S.xp+=f?15:8;S.g+=f?4:2}
+$('fb').insertAdjacentHTML('beforeend',`<div class="fb">${g?'🔧 Kijavítva! ':'❌ Nem ez a jó javítás. '}${esc(b.e)}<div class="row"><button class="p" onclick="hn()">Tovább →</button></div></div>`);head()}
+function hn(){if(++st.k<5)return hq();if(st.ok==5){S.xp+=20;S.g+=10}head();app.innerHTML=`<div class="card"><div class="mon">${st.ok==5?'🏆':'🐞'}</div><h2>${st.ok}/5 hiba kijavítva</h2><p>${st.ok==5?'Hibátlan kör! +20 XP és +10 🪙 bónusz.':'Minden javítás XP-t és aranyat ér. Próbáld újra!'}</p>${toast()}<div class="row"><button class="p" onclick="hunt()">Új kör</button><button onclick="home()">Főoldal</button></div></div>`}
+function shop(){head();const own=k=>k=='sh'?S.sh:S.own.includes(k);
+app.innerHTML=`<div class="card"><h2>🛒 Bolt</h2><p class="mu">Egyenleged: 🪙 ${S.g}</p>`+SH.map(([k,n,d,p,t])=>`<div class="row" style="justify-content:space-between;align-items:center;border-top:1px solid var(--bd);padding-top:8px"><span><b>${n}</b><br><small class="mu">${d}${t=='c'?' · nálad: '+S.inv[k]:''}</small></span>`+(own(k)?(t=='a'?(S.av==k?'<span>✅ viseled</span>':`<button onclick="eq('${k}')">Felvesz</button>`):'<span>✅ megvan</span>'):`<button ${S.g<p?'disabled':''} onclick="buy('${k}')">${p} 🪙</button>`)+'</div>').join('')+'</div><div class="row"><button onclick="home()">← Vissza</button></div>'+toast()}
+function buy(k){const it=SH.find(x=>x[0]==k);if(S.g<it[3])return;S.g-=it[3];S.sp++;if(it[4]=='c')S.inv[k]++;else if(k=='sh')S.sh=1;else{S.own.push(k);S.av=k}head();shop()}
+function eq(k){S.av=k;save();shop()}
+function qs(){const q=st.b[st.k];st.tries=0;st.an=0;const h=st.hid||[];
+app.innerHTML=`<div class="card"><div class="row mu" style="justify-content:space-between"><span>${S.av} ${'❤️'.repeat(st.hp)}${'🖤'.repeat(3-st.hp)}</span><span>${MON[st.i]} ${'🟥'.repeat(3-st.ok)}${'⬛'.repeat(st.ok)}</span></div><p><b>${esc(q.q)}</b></p>`+
+(q.o?q.o.map((o,j)=>`<button class="o" ${h.includes(j)?'style="display:none"':''} onclick="ans(${j})">${esc(o)}</button>`).join(''):`<input type="text" id="in" placeholder="${st.hint?q.f[0][0]+'…':''}" autocomplete="off" autocapitalize="off" onkeydown="if(event.key=='Enter')ans()"><div class="row"><button class="p" onclick="ans()">Támadás</button></div>`)+
+`<div class="row">${S.inv.p?`<button onclick="pot()">🧪 Gyógyital (${S.inv.p})</button>`:''}${S.inv.t?`<button onclick="tip()">📜 Tipp (${S.inv.t})</button>`:''}</div><div id="fb"></div></div><div class="row"><button onclick="home()">🏃 Menekülés</button></div>`}
+function pot(){if(st.an||!S.inv.p||st.hp>=3)return;S.inv.p--;st.hp++;save();qs()}
+function tip(){if(st.an||!S.inv.t||st.hid||st.hint)return;const q=st.b[st.k];S.inv.t--;save();if(q.o)st.hid=q.o.map((_,j)=>j).filter(j=>j!=q.a).sort(()=>Math.random()-.5).slice(0,2);else st.hint=1;qs()}
+const _ans=ans;ans=function(j){const h=st.hp;_ans(j);
+if(st.hp<h&&S.sh&&!st.su){st.su=1;st.hp=h;$('fb').insertAdjacentHTML('afterbegin','<div class="fb">🛡️ A pajzs kivédte a sebet!</div>')}
+if(document.querySelector('#fb .p'))st.an=1};
+const _nx=nxt;nxt=function(){st.hid=null;st.hint=0;_nx()};
+const _hm=home;home=function(){_hm();app.insertAdjacentHTML('afterbegin','<div class="row" style="margin-bottom:10px"><button class="p" onclick="hunt()">🐞 Hibavadászat</button><button onclick="shop()">🛒 Bolt</button></div>')};
+const _hd=head;head=function(){_hd();$('xp').innerHTML=$('xp').innerHTML.replace('🧙',S.av)};
+home();
+</script></body></html>
